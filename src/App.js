@@ -1,39 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import TaskBanner from "./componentes/TaskBanner";
 import TaskRow from "./componentes/TaskRow";
 import TaskCreator from "./componentes/TaskCreator";
 
 function App() {
+  const datosUsuario = [
+    {
+      title: "tarea uno",
+      completed: false,
+    },
+    {
+      title: "tarea dos",
+      completed: false,
+    },
+    {
+      title: "tarea tres",
+      completed: true,
+    },
+    //done
+]
+
   const [userName, setUserName] = useState("Fazt");
-  const [TaskItem, setTaskItem] = useState([
-    {
-      name: "tarea uno",
-      done: false,
-    },
-    {
-      name: "tarea dos",
-      done: false,
-    },
-    {
-      name: "tarea tres",
-      done: true,
-    },
-  ]);
+  const [TaskItem, setTaskItem] = useState(datosUsuario);
+
+  useEffect(() => {
+    const datosUsuario = async () => {
+      await fetch("https://jsonplaceholder.typicode.com/todos/1")
+        .then((respose) => respose.json())
+        .then((date) => {
+          setTaskItem((oldDatos) => {
+            return [date, ...oldDatos];
+          });
+        });
+    };
+    datosUsuario();
+  }, []);
+
+
+
+
   console.log(TaskItem);
 
   const toggleTask = (task) =>
     setTaskItem(
-      TaskItem.map((t) => (t.name === task.name ? { ...t, done: !t.done } : t))
+      TaskItem.map((t) => (t.title === task.title ? { ...t, completed: !t.completed } : t))
     );
 
   const taskTableRows = () =>
     TaskItem.map((task) => (
-      <TaskRow task={task} key={task.name} toggleTask={toggleTask} />
+      <TaskRow task={task} key={task.title} toggleTask={toggleTask} />
     ));
 
   const createNewTask = (taskName) => {
-    if (!TaskItem.find((t) => t.name === taskName)) {
-      setTaskItem([...TaskItem, { name: taskName, done: false }]);
+    if (!TaskItem.find((t) => t.title === taskName)) {
+   
+      setTaskItem([...TaskItem, { title: taskName, completed: false }]);
+      
     }
   };
 
