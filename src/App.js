@@ -11,7 +11,7 @@ function App() {
 
   const [userName, setUserName] = useState("Fazt");
   const [TaskItem, setTaskItem] = useState(datosUsuario);
-  console.log(TaskItem);
+
   useEffect(() => {
     const datosUsuario = async () => {
       await fetch("https://jsonplaceholder.typicode.com/todos/1")
