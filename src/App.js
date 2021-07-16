@@ -1,28 +1,17 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import TaskBanner from "./componentes/TaskBanner";
 import TaskRow from "./componentes/TaskRow";
 import TaskCreator from "./componentes/TaskCreator";
-
+import VisibilityContro from "./componentes/VisibilityControl";
+import { v4 as uuidv4 } from "uuid";
 function App() {
-  const datosUsuario = [
-    {
-      title: "tarea uno",
-      completed: false,
-    },
-    {
-      title: "tarea dos",
-      completed: false,
-    },
-    {
-      title: "tarea tres",
-      completed: true,
-    },
-    //done
-]
+  const datosUsuario = [];
+
+  const [showcompleted, setShowCompleted] = useState(true);
 
   const [userName, setUserName] = useState("Fazt");
   const [TaskItem, setTaskItem] = useState(datosUsuario);
-
+  console.log(TaskItem);
   useEffect(() => {
     const datosUsuario = async () => {
       await fetch("https://jsonplaceholder.typicode.com/todos/1")
@@ -36,27 +25,34 @@ function App() {
     datosUsuario();
   }, []);
 
-
-
-
-  console.log(TaskItem);
-
   const toggleTask = (task) =>
     setTaskItem(
-      TaskItem.map((t) => (t.title === task.title ? { ...t, completed: !t.completed } : t))
+      TaskItem.map((t) =>
+        t.title === task.title ? { ...t, completed: !t.completed } : t
+      )
     );
 
-  const taskTableRows = () =>
-    TaskItem.map((task) => (
-      <TaskRow task={task} key={task.title} toggleTask={toggleTask} />
+  const taskTableRows = (doneVale) =>
+    TaskItem.filter((task) => task.completed === doneVale).map((task) => (
+      <TaskRow
+        deletask={deleTask}
+        task={task}
+        key={task.title}
+        toggleTask={toggleTask}
+      />
     ));
 
   const createNewTask = (taskName) => {
     if (!TaskItem.find((t) => t.title === taskName)) {
-   
-      setTaskItem([...TaskItem, { title: taskName, completed: false }]);
-      
+      setTaskItem([
+        ...TaskItem,
+        { title: taskName, completed: false, userId: uuidv4() },
+      ]);
     }
+  };
+
+  const deleTask = (id) => {
+    setTaskItem(TaskItem.filter((task) => task.userId !== id));
   };
 
   return (
@@ -72,8 +68,28 @@ function App() {
         </thead>
         <tbody>{taskTableRows(true)}</tbody>
       </table>
+
+      <div>
+        <VisibilityContro
+          isChecked={showcompleted}
+          callback={(checked) => setShowCompleted(checked)}
+        />
+      </div>
+
+      {showcompleted && (
+        <div className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Done</th>
+            </tr>
+          </thead>
+          <tbody>{taskTableRows(false)}</tbody>
+        </div>
+      )}
     </div>
   );
 }
 
 export default App;
+
