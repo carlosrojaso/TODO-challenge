@@ -12,11 +12,25 @@ function TaskRow(props) {
         />
       </td>
       <td>
-        <button className="btn btn-primary" onClick={()=>props.deletask(props.task.userId)}>Delete</button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            props.editRow(props.task)
+          }}
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          className="btn btn-primary"
+          onClick={() => props.deletask(props.task.userId)}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );
 }
 
 export default TaskRow;
-
