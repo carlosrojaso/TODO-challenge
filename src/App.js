@@ -114,7 +114,7 @@ function App() {
       </div>
 
       {showcompleted && (
-        <div className="table table-striped table-bordered">
+        <table className="table table-striped table-bordered">
           <thead>
             <tr>
               <th>Description</th>
@@ -122,7 +122,7 @@ function App() {
             </tr>
           </thead>
           <tbody>{taskTableRows(false)}</tbody>
-        </div>
+        </table>
       )}
     </div>
   );
