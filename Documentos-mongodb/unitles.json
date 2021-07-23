@@ -1,0 +1,35 @@
+
+
+{
+    "nombre" : "lapto",
+    "precio" : 40.2,
+    "active" : true,
+    "created_at" : new Date ("12/12/1999"),
+    "soamdate":  [1, "a", [] ],
+    "facturante": {
+        "name": "dell",
+        "version": "xps",
+        "location":{
+            "city": "usa",
+            "addres": "asdasd"
+        }
+    } 
+}
+
+
+db.products.insert([
+    {
+        "name": "mouse",
+        "description" : "razer mouse",
+        "tags" : ["computers", "gaming"],
+        "quantity" : 14,
+        "created-at": new Date()
+    },
+    {
+        "name": "monitor",
+        "description" : "lg monitor",
+        "tags":  ["computers", "gaming"],
+        "quantity" : 3,
+        "created-at": new Date()
+    }
+])
